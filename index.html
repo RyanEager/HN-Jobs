@@ -1,11 +1,17 @@
 <html>
 <head>
-<script src="https://cdn.firebase.com/js/client/2.2.9/firebase.js"></script>
-<script src="hn.js"></script>
-
+	<script src="https://cdn.firebase.com/js/client/2.2.9/firebase.js"></script>
+	<script src="hn.js"></script>
+	<link rel="stylesheet" href="style.css">
 </head>
-<body>
 
+<body>
+	<button onclick="indexedDB.deleteDatabase('Whos_Hiring')">Reset DB</button>
+	<button onclick="viewAll()">view all</button>
+
+	<table id="data-table" class="table">
+	    <tr><td>There are no items...</td></tr>
+	</table>
 
 </body>
 </html>
