@@ -53,7 +53,7 @@ function addData(){
 	};
 
 	transaction.onerror = function(event) {
-	  	console.error("addData:", evt.target.errorCode);
+	  	console.error("addData:", event.target.errorCode);
 	};
 
 	var objectStore = transaction.objectStore("Who_Is_Hiring_Submitted");
