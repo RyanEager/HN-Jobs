@@ -4,30 +4,107 @@ const DB_VERSION = 1; // Use a long long for this value (don't use a float)
 //const DB_STORE_NAME = 'Who_Is_Hiring_Submitted';
 
 var db;
-var new_stories = [];
-var old_stories = [];
 var hn = new Firebase("https://hacker-news.firebaseio.com/v0");
+var view = [];
+var all = [];
 
-//openDb(getNewStories);
-openDb(addStory('9996333'));
-// openDb();
+openDb(getNewStories);
 
+window.addEventListener("load", addEvents, false);
 
-function viewAll(){
-	var items = [];
+function addEvents(){
+	var query = document.getElementById('searchText');
+	query.addEventListener("keydown", function (e) {
+	    if (e.keyCode === 13) {  //checks whether the pressed key is "Enter"
+	        search();
+	    }
+	});
+}
+
+function search(){
+	view = all;
+
+	var newView = [];
+	var query = document.getElementById('searchText').value;
+
+	var patt = new RegExp(query);
+	for (var i = 0; i < view.length; i++) {
+		if(patt.test(view[i].text)){
+			newView.push(view[i]);
+		}
+	};
+	if(query.length > 0){
+		view = newView;	
+	}
+	updateView();
+}
+
+function filter(){
+	var newView = []
+	var intern = document.getElementById('intern');
+	var remote = document.getElementById('remote');
+	var internPatt = /interns?(hips?)? /i;
+	var remotePatt = /remote/i;
+
+	
+	for (var i = 0; i < view.length; i++) {
+		if(intern.checked){
+			if(internPatt.test(view[i].text)){
+				newView.push(view[i]);
+			}
+		}
+		if(remote.checked){
+			if(remotePatt.test(view[i].text)){
+				newView.push(view[i]);
+			}
+		}
+	};
+
+	if(intern.checked || remote.checked){
+		view = newView;
+		updateView();
+	}
+	else{
+		viewAll();
+	}
+
+}
+
+function updateView(){
 	var table = document.getElementById('data-table');
 	table.innerHTML = '';
+	for (var i = 0; i < view.length; i++) {
+		view[i]
 
+		var tr = table.insertRow(table.rows.length);
+		var td = tr.insertCell(0);
+		
+		var postBottom = '<br><hr>by: <a href=https://news.ycombinator.com/user?id=' + view[i].by +'>'+ view[i].by + '</a>' 
+						+ '&nbsp;&nbsp;|&nbsp;&nbsp;' + '<a href=https://news.ycombinator.com/item?id=' + view[i].id +'>HN</a>' 
+						+ '&nbsp;&nbsp;|&nbsp;&nbsp;' + '<button onclick="favorite(' + view[i].id + ')">Favorite</button>'
+						+ '&nbsp;&nbsp;|&nbsp;&nbsp;' + '<button onclick="hide(' + view[i].id + ')">Hide</button>'
+						+ '<div align="right">posted on: ' + new Date(view[i].time * 1000).toLocaleString() + '</div>' ;
+
+		td.innerHTML = view[i].text + postBottom;
+		tr.id = view[i].id;
+	};
+
+}
+
+function viewAll(){
 	var transaction = db.transaction(['items'], "readwrite");
 	var objectStore = transaction.objectStore('items');
+	view = [];
 
 	objectStore.openCursor().onsuccess = function(event) {
 	  	var cursor = event.target.result;
 	  	if (cursor) {
-	    	var tr = table.insertRow(table.rows.length);
-			var td = tr.insertCell(0);
-			td.innerHTML = cursor.value.text;
+	  		view.push(cursor.value);
 	    	cursor.continue();
+	  	}
+	  	else{
+	  		all = view;
+	  		updateView();
 	  	}
 		
 	};
@@ -40,6 +117,7 @@ function openDb(callback) {
 	req.onsuccess = function (evt) {
 	  	db = this.result;
 	  	console.log("openDb DONE");
+
 	  	if(callback) callback();
 	  	
 	};
@@ -49,9 +127,9 @@ function openDb(callback) {
 
 	req.onupgradeneeded = function (evt) {
 	  	console.log("openDb.onupgradeneeded");
-		evt.currentTarget.result.createObjectStore('wih_new', { keyPath: 'id'});
-		evt.currentTarget.result.createObjectStore('wih_added', { keyPath: 'id'});
 		evt.currentTarget.result.createObjectStore('items', { keyPath: 'id'});
+		evt.currentTarget.result.createObjectStore('favorites', { keyPath: 'id'});
+		evt.currentTarget.result.createObjectStore('hidden', { keyPath: 'id'});
 	};
 
 
@@ -60,40 +138,29 @@ function openDb(callback) {
 function getNewStories(){
 	console.log('getNewStories ...')
 
-	//get list of currently added stories
-	var transaction = db.transaction(['wih_added'], "readwrite");
-	var wih_added = transaction.objectStore('wih_added');
-
-	wih_added.openCursor().onsuccess = function(event) {
-	  	var cursor = event.target.result;
-	  	if (cursor) {
-	    	old_stories.push(cursor.value);
-	    	cursor.continue();
-	  	}
-	};
-
 	//get list of new stories
-	hn.child("user/whoishiring/submitted").once("value", function(snapshot) {
-		new_stories = snapshot.val();
+	hn.child("user/whoishiring/submitted").limitToFirst(3).once("value", function(snapshot) {
+		new_stories = Object.keys(snapshot.val()).map(function(k) { return snapshot.val()[k] });
 
-		console.log('getNewStories: adding ' + (new_stories.length - old_stories.length) + ' stories');
-	
 		//add new stories
 		for (var i = 0; i < new_stories.length; i++) {
-			if(!old_stories.indexOf(new_stories[i])){
 				addStory(new_stories[i]);
-			};
 		};
-
-			console.log('getNewStories DONE')
+		console.log('getNewStories DONE');
 	});
+	viewAll();
 }
 
 function addStory(storyID){
-	hn.child("item/" + storyID + "/kids").on("child_added", function(snapshot){
-		addComment(snapshot.val());
-	});
+	hn.child("item/" + storyID).once("value", function(snapshot){
 
+		if(snapshot.val().title.indexOf('Who is hiring?') > 0){
+
+			hn.child("item/" + storyID + "/kids").on("child_added", function(snapshot){
+				addComment(snapshot.val());
+			});
+		};
+	});
 }
 
 function addComment(commentID){

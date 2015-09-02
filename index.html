@@ -6,11 +6,48 @@
 </head>
 
 <body>
-	<button onclick="indexedDB.deleteDatabase('Whos_Hiring')">Reset DB</button>
-	<button onclick="viewAll()">view all</button>
+	
 
-	<table id="data-table" class="table">
-	    <tr><td>There are no items...</td></tr>
+
+	<table id="layout-table">
+	<tr>
+		    <td id="filters-td" rowspan="2">
+		    	<h3>Filters:</h3><hr>
+		    	<h4>Type:</h4>
+		    	<input type="checkbox" id="intern">Intern<br>
+		    	<input type="checkbox" id="remote">Remote<br>
+		    	<hr>
+		    	<h4>Location:</h4>
+		    	<input type="checkbox" id="sf">SF<br>
+		    	<input type="checkbox" id="boston">Boston<br>
+		    	<br>
+		    	<button onclick="filter()">Filter</button>
+		    
+	    		<hr>
+	    		<button onclick="indexedDB.deleteDatabase('Whos_Hiring')">Reset DB</button>
+				<button onclick="viewAll()">view all</button>
+		    	
+		    </td>
+		    <td id="search">
+		    	<input type="text" id="searchText">
+		    	<button onclick="search()">Search</button>
+		    </td>
+	    </tr>
+	    <tr>
+	    	<td id="comments-td">
+
+	    		<div class='scroll'>
+	    		<table id="data-table"> 
+		    		<tr>
+		    			<td>
+		    				Nothing...
+		    			</td>
+		    		</tr>
+	    		</table> 
+	    		</div>
+	    	</td>
+	    </tr>
+
 	</table>
 
 </body>
