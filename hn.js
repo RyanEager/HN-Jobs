@@ -43,8 +43,13 @@ function filter(){
 	var newView = []
 	var intern = document.getElementById('intern');
 	var remote = document.getElementById('remote');
+	var sf = document.getElementById('sf');
+	var boston = document.getElementById('boston');
+
 	var internPatt = /interns?(hips?)? /i;
 	var remotePatt = /remote/i;
+	var sfPatt = /(SF|San Francisco|Bay Area)/i;
+	var bostonPatt = /Boston/i;
 
 	
 	for (var i = 0; i < view.length; i++) {
@@ -58,9 +63,19 @@ function filter(){
 				newView.push(view[i]);
 			}
 		}
+		if(sf.checked){
+			if(sfPatt.test(view[i].text)){
+				newView.push(view[i]);
+			}
+		}
+		if(boston.checked){
+			if(bostonPatt.test(view[i].text)){
+				newView.push(view[i]);
+			}
+		}
 	};
 
-	if(intern.checked || remote.checked){
+	if(intern.checked || remote.checked || sf.checked || boston.checked){
 		view = newView;
 		updateView();
 	}
