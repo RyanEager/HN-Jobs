@@ -30,6 +30,8 @@ a:visited {
 	text-decoration:none; 
 }
 
+.pagetop a:visited { color:#000000;}
+
 input{ 
 	font-family:monospace; 
 	font-size:10pt; 
