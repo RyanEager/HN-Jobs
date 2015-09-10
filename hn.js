@@ -97,13 +97,13 @@ function updateView(){
 		var tr = table.insertRow(table.rows.length);
 		var td = tr.insertCell(0);
 		
-		var postBottom = '<br><hr>by: <a href=https://news.ycombinator.com/user?id=' + view[i].by +'>'+ view[i].by + '</a>' 
+		var postTop = '<br><hr>by: <a href=https://news.ycombinator.com/user?id=' + view[i].by +'>'+ view[i].by + '</a>' 
 						+ '&nbsp;&nbsp;|&nbsp;&nbsp;' + '<a href=https://news.ycombinator.com/item?id=' + view[i].id +'>HN</a>' 
-						+ '&nbsp;&nbsp;|&nbsp;&nbsp;' + '<button onclick="favorite(' + view[i].id + ')">Favorite</button>'
-						+ '&nbsp;&nbsp;|&nbsp;&nbsp;' + '<button onclick="hide(' + view[i].id + ')">Hide</button>'
-						+ '<div align="right">posted on: ' + new Date(view[i].time * 1000).toLocaleString() + '</div>' ;
+						// + '&nbsp;&nbsp;|&nbsp;&nbsp;' + '<button onclick="favorite(' + view[i].id + ')">Favorite</button>'
+						// + '&nbsp;&nbsp;|&nbsp;&nbsp;' + '<button onclick="hide(' + view[i].id + ')">Hide</button>'
+						+ '&nbsp;&nbsp;|&nbsp;&nbsp;' + 'posted on: ' + new Date(view[i].time * 1000).toLocaleString() + '<hr>' ;
 
-		td.innerHTML = view[i].text + postBottom;
+		td.innerHTML = postTop + view[i].text;
 		tr.id = view[i].id;
 	};
 
