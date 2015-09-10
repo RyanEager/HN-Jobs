@@ -40,42 +40,44 @@ function search(){
 }
 
 function filter(){
-	var newView = []
-	var intern = document.getElementById('intern');
-	var remote = document.getElementById('remote');
-	var sf = document.getElementById('sf');
-	var boston = document.getElementById('boston');
+	var newView = [];
+	var type = [];
+	var locations = [];
 
-	var internPatt = /interns?(hips?)? /i;
-	var remotePatt = /remote/i;
-	var sfPatt = /(SF|San Francisco|Bay Area)/i;
-	var bostonPatt = /Boston/i;
-
+	type.push([document.getElementById('intern'), /interns?(hips?)? /i]);
+	type.push([document.getElementById('remote'), /remote/i]);
 	
+	locations.push([document.getElementById('sf'), /(SF|San Francisco|Bay Area)/i]);
+	locations.push([document.getElementById('boston'), /Boston/i]);
+
+	var haveFilter = false;
+	
+
 	for (var i = 0; i < view.length; i++) {
-		if(intern.checked){
-			if(internPatt.test(view[i].text)){
-				newView.push(view[i]);
+		var haveType = false;
+		var typeMatch = false;
+
+		for (var j = 0; j < type.length; j++) {
+			if(type[j][0].checked){
+				if(type[j][1].test(view[i].text)){
+					typeMatch = true;
+				}
+				haveType = true;
+				haveFilter = true;
 			}
-		}
-		if(remote.checked){
-			if(remotePatt.test(view[i].text)){
-				newView.push(view[i]);
+		};
+
+		for (var j = 0; j < locations.length; j++) {
+			if(locations[j][0].checked){
+				if((!haveType || typeMatch) && locations[j][1].test(view[i].text)){
+					newView.push(view[i]);
+				}
+				haveFilter = true;
 			}
-		}
-		if(sf.checked){
-			if(sfPatt.test(view[i].text)){
-				newView.push(view[i]);
-			}
-		}
-		if(boston.checked){
-			if(bostonPatt.test(view[i].text)){
-				newView.push(view[i]);
-			}
-		}
+		};
 	};
 
-	if(intern.checked || remote.checked || sf.checked || boston.checked){
+	if(haveFilter){
 		view = newView;
 		updateView();
 	}
