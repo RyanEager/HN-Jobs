@@ -78,6 +78,7 @@ function filter(){
 	};
 
 	if(haveFilter){
+
 		view = newView;
 		updateView();
 	}

@@ -1,4 +1,10 @@
 
+body  { 
+	font-family:Verdana, Geneva, sans-serif; 
+	font-size:10pt; 
+	color:#000000; 
+}
+
 table{
   table-layout:fixed;
   border-collapse: collapse;
@@ -9,7 +15,26 @@ table{
 
 td{
 	padding: 7px;
-	border: 1px solid #000000;
+	
+	font-family:Verdana, Geneva, sans-serif; 
+	font-size:10pt; 
+	color:#000000;
+}
+
+a:link { 
+	color:#000000; 
+	text-decoration:none; 
+}
+
+a:visited { 
+	color:#828282; 
+	text-decoration:none; 
+}
+
+input{ 
+	font-family:monospace; 
+	font-size:10pt; 
+	color:#000000; 
 }
 
 h3{ 
@@ -30,9 +55,28 @@ div.scroll{
     overflow: auto;
 }
 
+#layout-table{
+	width: 90%;
+	height: 99%;
+	margin-left:5%; 
+    margin-right:5%;
+}
+
+#data-table{
+	border: 0px;
+}
+#outer{
+	border: 0px;
+
+}
+#top{
+	height: 20px;
+}
+
 #filters-td{
 	width: 200px;
 	vertical-align: top;
+	border: 1px solid #000000;
 }
 
 #search{
@@ -41,4 +85,11 @@ div.scroll{
 
 input[type=text]{
 	width: 60%;
+	font-family:monospace; 
+	font-size:10pt; 
+	color:#000000;
+}
+
+input[type="submit"] { 
+	font-family:Verdana, Geneva, sans-serif; 
 }

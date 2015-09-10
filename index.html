@@ -6,50 +6,60 @@
 </head>
 
 <body>
-	
-
+	<base target="_blank">
 
 	<table id="layout-table">
-	<tr>
-		    <td id="filters-td" rowspan="2">
-		    	<h3>Filters:</h3><hr>
-		    	<h4>Type:</h4>
-		    	<input type="checkbox" id="intern">Intern<br>
-		    	<input type="checkbox" id="remote">Remote<br>
-		    	<hr>
-		    	<h4>Location:</h4>
-		    	<input type="checkbox" id="sf">SF/Bay Area<br>
-		    	<input type="checkbox" id="boston">Boston<br>
-		    	<br>
-		    	<button onclick="filter()">Filter</button>
-		    
-	    		<hr>
-	    		<button onclick="indexedDB.deleteDatabase('Whos_Hiring')">Reset DB</button>
-				<button onclick="viewAll()">view all</button>
-		    	
-		    </td>
-		    <td id="search">
-		    	<input type="text" id="searchText">
-		    	<button onclick="search()">Search</button>
-		    	RegEx syntax supported.
-		    </td>
-	    </tr>
-	    <tr>
-	    	<td id="comments-td">
+		<tr id="top"> 
+			<td bgcolor="#ff6600" id="outer">
+				<b>HN Jobs </b>
+				&nbsp;<a href="/favorites">Favorites</a> | <a href="/hidden">Hidden</a>
+			</td>
+		</tr>
+		<tr>
+			<td id="outer" bgcolor="#f6f6ef">
+				<table>
+				<tr>
+					    <td id="filters-td" rowspan="2">
+					    	<h3>Filters:</h3><hr>
+					    	<h4>Type:</h4>
+					    	<input type="checkbox" id="intern">Intern<br>
+					    	<input type="checkbox" id="remote">Remote<br>
+					    	<hr>
+					    	<h4>Location:</h4>
+					    	<input type="checkbox" id="sf">SF/Bay Area<br>
+					    	<input type="checkbox" id="boston">Boston<br>
+					    	<br>
+					    	<button onclick="filter()">Filter</button>
+					    
+				    		<hr>
+				    		<button onclick="indexedDB.deleteDatabase('Whos_Hiring')">Reset DB</button>
+							<button onclick="viewAll()">view all</button>
+					    	
+					    </td>
+					    <td id="search">
+					    	<input type="text" id="searchText">
+					    	<button onclick="search()">Search</button>
+					    	&nbsp;RegEx syntax supported.<hr>
+					    </td>
+				    </tr>
+				    <tr>
+				    	<td id="comments-td">
 
-	    		<div class='scroll'>
-	    		<table id="data-table"> 
-		    		<tr>
-		    			<td>
-		    				Nothing...
-		    			</td>
-		    		</tr>
-	    		</table> 
-	    		</div>
-	    	</td>
-	    </tr>
+				    		<div class='scroll'>
+				    		<table id="data-table" > 
+					    		<tr>
+					    			<td>
+					    				Nothing...
+					    			</td>
+					    		</tr>
+				    		</table> 
+				    		</div>
+				    	</td>
+				    </tr>
 
+				</table>
+			</td>
+		</tr>
 	</table>
-
 </body>
 </html>
