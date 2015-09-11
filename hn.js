@@ -56,6 +56,7 @@ function filter(){
 	for (var i = 0; i < view.length; i++) {
 		var haveType = false;
 		var typeMatch = false;
+		var haveLocation = false;
 
 		for (var j = 0; j < type.length; j++) {
 			if(type[j][0].checked){
@@ -68,17 +69,33 @@ function filter(){
 		};
 
 		for (var j = 0; j < locations.length; j++) {
-			if(locations[j][0].checked){
-				if((!haveType || typeMatch) && locations[j][1].test(view[i].text)){
-					newView.push(view[i]);
-				}
-				haveFilter = true;
+			if(haveType){
+				if(typeMatch){
+					if(locations[j][0].checked){
+						if(locations[j][1].test(view[i].text)){
+							newView.push(view[i]);
+						}
+						haveFilter = true;
+						haveLocation = true;
+					}
+				};
+			}
+			else{
+				if(locations[j][0].checked){
+						if(locations[j][1].test(view[i].text)){
+							newView.push(view[i]);
+						}
+						haveFilter = true;
+					}
 			}
 		};
+
+		if(!haveLocation && typeMatch){
+			newView.push(view[i]);
+		}
 	};
 
 	if(haveFilter){
-
 		view = newView;
 		updateView();
 	}
